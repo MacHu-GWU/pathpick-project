@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
-from pathlib import Path
 from pathpick.paths import dir_docs_source, dir_venv_bin
 
 bin_jupyter = dir_venv_bin / "jupyter"
