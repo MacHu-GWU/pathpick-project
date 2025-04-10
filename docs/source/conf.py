@@ -20,7 +20,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-from __future__ import unicode_literals
 import os
 from datetime import datetime
 import pathpick as package
@@ -60,9 +59,9 @@ templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = {
+    ".rst": "restructuredtext",
+}
 
 # The master toctree document.
 master_doc = "index"
@@ -231,16 +230,19 @@ jinja_contexts = {
 }
 
 # Api Reference Doc
-import docfly
+from pathlib import Path
+import docfly.api as docfly
 
-docfly.ApiReferenceDoc(
-    conf_file=__file__,
+docfly.ApiDocGenerator(
+    dir_output=Path(__file__).absolute().parent.joinpath("api"),
     package_name=package_name,
-    ignored_package=[
-        "%s.docs" % package_name,
-        "%s.tests" % package_name,
-        "%s.vendor" % package_name,
-        "%s._version" % package_name,
-        "%s.paths" % package_name,
+    ignore_patterns=[
+        # Package
+        f"{package_name}.docs",
+        f"{package_name}.tests",
+        f"{package_name}.vendor",
+        # Module
+        f"{package_name}._version",
+        f"{package_name}.paths",
     ],
 ).fly()
